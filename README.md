@@ -22,6 +22,8 @@ rails g resource Animal name:string sci_name:string
                PUT    /animals/:id(.:format)          animals#update
                DELETE /animals/:id(.:format)          animals#destroy
 
+# STORY 1
+
 # Acceptance Criteria for Story 1
 
 1. Create a resource for animal with the following information: common name and scientific binomial
@@ -98,3 +100,37 @@ DELETE localhost:3000/sightings/1
         # 1 Refers to the id of the sighting I want to delete
 
 # STORY 3
+
+# Acceptance Criteria for Story 3
+
+1. Can see one animal with all its associated sightings
+
+To do this, I went into my animals_controller.rb file and added 
+ include: [:sightings]
+to the show method. This way when we take one animal we also see all of the sightings assosiated with the animals id. 
+
+2. Can see all the all sightings during a given time period
+        Hint: Your controller can use a range to look like this:
+
+class SightingsController < ApplicationController
+  def index
+    sightings = Sighting.where(date: params[:start_date]..params[:end_date])
+    render json: sightings
+  end
+end
+
+        Hint: Be sure to add the start_date and end_date to what is permitted in your strong parameters method
+        Hint: Utilize the params section in Postman to ease the developer experience
+
+# IN PostMan
+
+In the query params put exactly what is in your params. In this case in keys it was start_date and end_date
+
+so it ends up looking like
+
+start_date 2022-01-01
+
+end_date 2022-12-25
+
+and that comes up with all the sightings between that timeframe
+
